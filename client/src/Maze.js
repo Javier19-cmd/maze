@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Typography, Modal, Box, Button } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -9,10 +9,9 @@ function Maze() {
   const [maze, setMaze] = useState(null);
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [hasWon, setHasWon] = useState(false);
-  const [startTime, setStartTime] = useState(null);
   const [score, setScore] = useState(0);
 
-  const fetchMaze = () => {
+  const fetchMaze = useCallback(() => {
     fetch(`${process.env.REACT_APP_SERVER}/api/maze`, {
       method: 'POST',
       headers: {
@@ -24,7 +23,6 @@ function Maze() {
       .then((data) => {
         setMaze(data.maze);
         setHasWon(false);
-        setStartTime(Date.now());
         for (let i = 0; i < data.maze.length; i++) {
           for (let j = 0; j < data.maze[i].length; j++) {
             if (data.maze[i][j] === 'P') {
@@ -35,11 +33,11 @@ function Maze() {
         }
       })
       .catch((error) => console.error('Error fetching maze:', error));
-  };
+  }, [difficulty]);
 
   useEffect(() => {
     fetchMaze();
-  }, [difficulty]);
+  }, [fetchMaze]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
