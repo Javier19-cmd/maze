@@ -2,16 +2,16 @@ function generateMaze(difficulty) {
   let size;
   switch (difficulty) {
     case 'easy':
-      size = 15; // Tamaño más grande para fácil
+      size = 10; // Tamaño más grande para fácil
       break;
     case 'medium':
-      size = 20; // Tamaño más grande para medio
+      size = 15; // Tamaño más grande para medio
       break;
     case 'hard':
-      size = 30; // Tamaño más grande para difícil
+      size = 20; // Tamaño más grande para difícil
       break;
     default:
-      size = 15;
+      size = 10;
   }
 
   const maze = Array.from({ length: size }, () => Array(size).fill('_'));
@@ -69,6 +69,18 @@ function generateMaze(difficulty) {
 
   addComplexity(maze);
 
+  // Función para asegurar que hay un camino libre alrededor de la posición
+  function hasFreeAdjacentCell(x, y) {
+    const directions = [
+      [1, 0], // Down
+      [-1, 0], // Up
+      [0, 1], // Right
+      [0, -1] // Left
+    ];
+
+    return directions.some(([dx, dy]) => isInBounds(x + dx, y + dy, size) && maze[x + dx][y + dy] === ' ');
+  }
+
   // Colocar el personaje 'P' y el final 'F'
   let playerPosition, finishPosition;
   do {
@@ -76,7 +88,7 @@ function generateMaze(difficulty) {
       x: Math.floor(Math.random() * (size - 2)) + 1,
       y: Math.floor(Math.random() * (size - 2)) + 1,
     };
-  } while (maze[playerPosition.x][playerPosition.y] !== ' ');
+  } while (maze[playerPosition.x][playerPosition.y] !== ' ' || !hasFreeAdjacentCell(playerPosition.x, playerPosition.y));
 
   maze[playerPosition.x][playerPosition.y] = 'P';
 
@@ -87,7 +99,7 @@ function generateMaze(difficulty) {
     };
   } while (
     maze[finishPosition.x][finishPosition.y] !== ' ' ||
-    (finishPosition.x === playerPosition.x && finishPosition.y === playerPosition.y) ||
+    !hasFreeAdjacentCell(finishPosition.x, finishPosition.y) || // Asegurar que la meta no esté encerrada
     distance(playerPosition.x, playerPosition.y, finishPosition.x, finishPosition.y) < size * 0.75 // Mayor distancia mínima
   );
 

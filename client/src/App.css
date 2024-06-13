@@ -1,5 +1,6 @@
 .App {
   text-align: center;
-  margin-top: 50px;
   color: white; /* Texto blanco */
+  background-color: #212121; /* Fondo oscuro */
+  padding: 20px;
 }

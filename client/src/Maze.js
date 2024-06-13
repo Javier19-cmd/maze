@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Container, Typography, Modal, Box, Button } from '@mui/material';
+import { motion } from 'framer-motion';
 import './Maze.css';
 
 function Maze() {
   const { difficulty } = useParams();
-  const navigate = useNavigate(); // Hook de navegación
   const [maze, setMaze] = useState(null);
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [hasWon, setHasWon] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [score, setScore] = useState(0);
 
   const fetchMaze = () => {
     fetch(`${process.env.REACT_APP_SERVER}/api/maze`, {
@@ -22,6 +24,7 @@ function Maze() {
       .then((data) => {
         setMaze(data.maze);
         setHasWon(false);
+        setStartTime(Date.now());
         for (let i = 0; i < data.maze.length; i++) {
           for (let j = 0; j < data.maze[i].length; j++) {
             if (data.maze[i][j] === 'P') {
@@ -73,6 +76,21 @@ function Maze() {
         setPlayerPosition({ x: newX, y: newY });
         
         if (maze[newX][newY] === 'F') {
+          let baseScore;
+          switch (difficulty) {
+            case 'easy':
+              baseScore = 100;
+              break;
+            case 'medium':
+              baseScore = 200;
+              break;
+            case 'hard':
+              baseScore = 300;
+              break;
+            default:
+              baseScore = 100;
+          }
+          setScore(baseScore);
           setHasWon(true);
         }
       }
@@ -80,7 +98,7 @@ function Maze() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [maze, playerPosition, hasWon]);
+  }, [maze, playerPosition, hasWon, difficulty]);
 
   const renderCell = (cell) => {
     switch (cell) {
@@ -108,23 +126,24 @@ function Maze() {
               <div key={rowIndex} className="maze-row">
                 {row.map((cell, cellIndex) => (
                   <div key={cellIndex} className="maze-cell">
-                    {renderCell(cell)}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {renderCell(cell)}
+                    </motion.div>
                   </div>
                 ))}
               </div>
             ))}
           </div>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => navigate('/')}
-            style={{ marginTop: '20px' }}
-          >
-            Regresar al Menú Principal
-          </Button>
           <Modal
             open={hasWon}
-            onClose={() => setHasWon(false)}
+            onClose={() => {
+              setHasWon(false);
+              fetchMaze();
+            }}
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
           >
@@ -132,7 +151,14 @@ function Maze() {
               <Typography id="modal-title" variant="h6" component="h2">
                 ¡Has ganado!
               </Typography>
-              <Button onClick={fetchMaze}>Generar nuevo laberinto</Button>
+              <Typography id="modal-description">
+                Puntuación: {score}
+              </Typography>
+              <Button onClick={() => {
+                setHasWon(false);
+                fetchMaze();
+              }}>Generar nuevo laberinto</Button>
+              <Button onClick={() => window.location.href = '/'}>Menú Principal</Button>
             </Box>
           </Modal>
         </>
