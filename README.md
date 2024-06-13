@@ -1,70 +1,136 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Maze Game
 
-## Available Scripts
+Maze Game es un juego de laberinto donde los jugadores pueden seleccionar la dificultad y navegar a través del laberinto para encontrar el final.
 
-In the project directory, you can run:
+## Características
 
-### `npm start`
+- Selección de dificultad (Fácil, Medio, Difícil)
+- Generación aleatoria de laberintos
+- Puntuación basada en la dificultad
+- Interfaz gráfica elegante y moderna
+- Diseño responsivo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Requisitos
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (versión 14 o superior)
+- npm (versión 6 o superior)
+- Vercel CLI para desplegar el servidor
 
-### `npm test`
+## Instalación
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Clonar el repositorio
 
-### `npm run build`
+```bash
+git clone https://github.com/Javier19-cmd/maze.git
+cd maze
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Configuración del servidor
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Navega al directorio del servidor:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd server
+```
 
-### `npm run eject`
+2. Instala las dependencias:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Crea un archivo `.env` en el directorio `server` con el siguiente contenido:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```env
+PORT=5000
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Inicia el servidor:
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+El servidor estará corriendo en `http://localhost:5000`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Configuración del cliente
 
-### Code Splitting
+1. Navega al directorio del cliente:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+cd client
+```
 
-### Analyzing the Bundle Size
+2. Instala las dependencias:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm install
+```
 
-### Making a Progressive Web App
+3. Crea un archivo `.env` en el directorio `client` con el siguiente contenido:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```env
+REACT_APP_SERVER=http://localhost:5000
+```
 
-### Advanced Configuration
+4. Inicia el cliente:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm start
+```
 
-### Deployment
+El cliente estará corriendo en `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Despliegue
 
-### `npm run build` fails to minify
+### Despliegue del servidor en Vercel
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Instala Vercel CLI si no lo tienes:
+
+```bash
+npm install -g vercel
+```
+
+2. Despliega el servidor:
+
+```bash
+cd server
+vercel
+```
+
+Sigue las instrucciones de Vercel para completar el despliegue. Obtendrás una URL donde tu servidor estará disponible.
+
+### Despliegue del cliente
+
+1. Actualiza el archivo `.env` del cliente para apuntar a la URL del servidor desplegado en Vercel. Por ejemplo:
+
+```env
+REACT_APP_SERVER=https://tu-servidor.vercel.app
+```
+
+2. Construye el cliente:
+
+```bash
+npm run build
+```
+
+3. Despliega el cliente en el servicio de tu elección (por ejemplo, Vercel, Netlify, GitHub Pages, etc.)
+
+## Uso
+
+1. Accede a la aplicación en tu navegador web. (Link: https://maze-sage.vercel.app/)
+2. Selecciona la dificultad del laberinto.
+3. Navega a través del laberinto usando las teclas de flecha.
+4. Encuentra la meta para ganar y ver tu puntuación.
+
+## Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, sigue los pasos a continuación para contribuir:
+
+1. Haz un fork del proyecto.
+2. Crea una rama para tu nueva funcionalidad (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios.
+4. Haz commit de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`).
+5. Sube tus cambios a tu fork (`git push origin feature/nueva-funcionalidad`).
+6. Abre un Pull Request.
