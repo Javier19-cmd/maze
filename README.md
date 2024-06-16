@@ -106,7 +106,7 @@ Sigue las instrucciones de Vercel para completar el despliegue. Obtendrás una U
 1. Actualiza el archivo `.env` del cliente para apuntar a la URL del servidor desplegado en Vercel. Por ejemplo:
 
 ```env
-REACT_APP_SERVER=https://tu-servidor.vercel.app
+REACT_APP_SERVER=https://maze-ruddy-two.vercel.app/
 ```
 
 2. Construye el cliente:
