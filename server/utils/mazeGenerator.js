@@ -8,7 +8,7 @@ function generateMaze(difficulty) {
       size = 15; // Tamaño más grande para medio
       break;
     case 'hard':
-      size = 20; // Tamaño más grande para difícil
+      size = 18; // Tamaño más grande para difícil
       break;
     default:
       size = 10;
@@ -56,15 +56,39 @@ function generateMaze(difficulty) {
   maze[1][1] = ' ';
   carvePassagesFrom(1, 1, maze);
 
-  // Aumentar la complejidad del laberinto añadiendo más caminos
+  // Aumentar la complejidad del laberinto añadiendo más caminos y bifurcaciones
   function addComplexity(maze) {
     for (let i = 1; i < size - 1; i++) {
       for (let j = 1; j < size - 1; j++) {
-        if (maze[i][j] === '_' && Math.random() > 0.7) {
+        if (maze[i][j] === '_' && Math.random() > 20) { // Reducido para agregar más caminos
           maze[i][j] = ' ';
+          createDeadEnds(i, j, maze);
         }
       }
     }
+  }
+
+  // Crear caminos sin salida y bifurcaciones para aumentar la complejidad
+  function createDeadEnds(x, y, maze) {
+    const directions = [
+      [1, 0], // Down
+      [-1, 0], // Up
+      [0, 1], // Right
+      [0, -1] // Left
+    ];
+
+    shuffle(directions);
+
+    directions.forEach(([dx, dy]) => {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (isInBounds(nx, ny, size) && maze[nx][ny] === '_') {
+        if (Math.random() > 0.2) { // Reducido para crear más bifurcaciones y caminos sin salida
+          maze[nx][ny] = ' ';
+          createDeadEnds(nx, ny, maze);
+        }
+      }
+    });
   }
 
   addComplexity(maze);
